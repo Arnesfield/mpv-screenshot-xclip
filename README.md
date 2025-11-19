@@ -10,15 +10,21 @@ Take a screenshot and use `xclip` to copy the image file to clipboard.
 
 ## Install
 
-1. Download [`screenshot-xclip.lua`](screenshot-xclip.lua) and place it under the `scripts` directory of your mpv config (e.g., `~/.config/mpv`).
+1. Download the following files to their appropriate directories under your mpv config (e.g., `~/.config/mpv`):
 
-   Or run the following to download it:
+   [`screenshot-xclip.lua`](screenshot-xclip.lua) - Save to `scripts` directory.
 
    ```sh
    wget github.com/Arnesfield/mpv-screenshot-xclip/raw/main/screenshot-xclip.lua
    ```
 
-2. Add the following keybindings to `input.conf` to replace the default screenshot keybindings:
+   [`screenshot-xclip.conf`](screenshot-xclip.conf) - (optional) Save to `script-opts` directory.
+
+   ```sh
+   wget github.com/Arnesfield/mpv-screenshot-xclip/raw/main/screenshot-xclip.conf
+   ```
+
+1. Add the following keybindings to `input.conf` to replace the default screenshot keybindings:
 
    ```conf
    s script-message screenshot-xclip
@@ -26,6 +32,20 @@ Take a screenshot and use `xclip` to copy the image file to clipboard.
    ctrl+s script-message screenshot-xclip window
    alt+s script-message screenshot-xclip each-frame
    ```
+
+## Config
+
+List of configuration options ([`screenshot-xclip.conf`](screenshot-xclip.conf)).
+
+### disable_osd_messages
+
+Disables OSD messages by log level. Comma-separated values of: `info`, `error`
+
+Example:
+
+```conf
+disable_osd_messages=info,error
+```
 
 ## License
 

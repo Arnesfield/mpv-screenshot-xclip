@@ -8,6 +8,21 @@
 -- Requires `xclip` in `PATH` to copy image files to clipboard.
 
 mp.msg = require('mp.msg')
+mp.options = require('mp.options')
+
+local options = {
+  disable_osd_messages = ''
+}
+
+mp.options.read_options(options, 'screenshot-xclip')
+
+-- parse disable_osd_messages
+local disabled_osd_log_level = { info = false, error = false }
+for log_level in string.gmatch(options.disable_osd_messages, '([^,]+)') do
+  if log_level == 'info' or log_level == 'error' then
+    disabled_osd_log_level[log_level] = true
+  end
+end
 
 local function get_mime_type(file_path)
   local result = mp.command_native({
@@ -55,13 +70,19 @@ local function screenshot_xclip(flag)
   mp.command_native_async(cmd, function(success, result, error)
     if not success then
       local message = 'Screenshot failed: ' .. tostring(error)
+
       mp.msg.error(message)
-      mp.osd_message(message)
+      if not disabled_osd_log_level.error then
+        mp.osd_message(message)
+      end
     elseif result and result.filename then
       -- result can be nil (e.g., for 'each-frame' flag)
       local message = "Screenshot: '" .. result.filename .. "'"
+
       mp.msg.info(message)
-      mp.osd_message(message)
+      if not disabled_osd_log_level.info then
+        mp.osd_message(message)
+      end
 
       run_xclip_async(result.filename)
     end
